@@ -9,15 +9,20 @@
  import (
     "fmt"
     "net/http"
+    "strings"
+    "strconv"
  )
 
  const form=`<html><body><form action="#" method="post" value="bar">
              <h2>Statistics</h2><br>
              <h4>Computes basic statistics for a given list of numbers</h4><br>
-             <h4>Numbers (comma or space-separated)</h4><br>
+             <h4>Numbers (comma-separated)</h4><br>
              <input type="text" value="in"/>
              <input type="submit" value="Calculate"/>
              </form></body></html>`
+
+ //const result=`<html><body>`
+
 
  func showForm(w http.ResponseWriter,req *http.Request) {
     w.Header().Set("Content-Type","text/html")
@@ -25,6 +30,19 @@
     case "GET":fmt.Fprint(w,form);
     case "POST" : //msg:=fmt.Fprint(w,req.FormValue("in"))
                   //fmt.Println(msg)
+                  msg:=req.FormValue("in")
+                  arr:=strings.Split(msg,",")
+                  //fmt.Fprintf(w,arr,"<h2>%s</h2>")
+                  count:=len(arr)
+                  sum:=0
+                  for _,val:=range arr {
+                    i,_:=strconv.Atoi(val)
+                    fmt.Fprintf(w,val,"<h2>%s</h2>")
+                    sum+=i
+                  }
+                  mean:=sum/count
+                  fmt.Fprintf(w,"<h1>Result</h1> <table border='1'> <tr> <td> Numbers </td> <td>%d</td></tr> <tr><td>Mean</td> <td>%d</td></tr>",msg,mean)
+
     }
 
 

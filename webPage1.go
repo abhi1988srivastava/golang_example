@@ -27,7 +27,7 @@
     case "POST" : //we need to call ParseForm before we can extract data like
                   //req.ParseForm()
                   //fmt.Fprint(w,req.Form["in"][0])
-                  fmt.Fprint(w,req.FormValue("in"))
+                  msg:=req.FormValue("in")
                   fmt.Println(msg)
 
                   fmt.Fprint(w," Am I not sexy? :P")
